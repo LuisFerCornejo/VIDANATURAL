@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="../img/uleam.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/admi.css">
+
+  <title>Formulario de Publicación</title>
+</head>
+<body>
+    <a href="index.html">Salir</a>
+  <h1>Formulario de Publicación</h1>
+
+  <form action="conexion.php" method="POST">
+    <label for="titulo">Título:</label>
+    <input type="text" id="titulo" name="titulo" required>
+
+    <label for="descripcion">Descripción:</label>
+    <textarea id="descripcion" name="descripcion" required></textarea>
+
+    <label for="tratamiento">Tratamiento:</label>
+    <textarea id="tratamiento" name="tratamiento" required></textarea>
+
+    <button type="submit">Guardar Publicación</button>
+  </form>
+</body>
+</html>

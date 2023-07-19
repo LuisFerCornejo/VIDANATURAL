@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Iniciar sesión</title>
+    <link rel="icon" href="../img/uleam.png">
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcWLx8nAAAAAMJWWXjQ46RkWTE-YI9nOxrUZ1Ga"></script>
+    <style>
+      body {
+        background-image: url(../img/login.jpg);
+        background-size: auto 100%;
+      }
+      
+    .container {
+  max-width: 400px;
+  margin: 50px auto; /* Ajusta el margen superior e inferior según tus necesidades */
+  padding: 20px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.container input[type="text"],
+.container input[type="password"] {
+  width: calc(100% - 20px); /* Resta el valor del padding a la anchura */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc; /* Agrega un borde a los inputs */
+}
+
+.container input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.container input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+      
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+      
+      a {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Iniciar sesión</h1>
+      <form id="login-form" action="procesar_login.php" method="post">
+        <label for="usuario">Usuario:</label>
+        <input type="text" id="usuario" name="usuario" placeholder="Usuario" required>
+
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña" required>
+        <div class="g-recaptcha" data-sitekey="6LcWLx8nAAAAAMJWWXjQ46RkWTE-YI9nOxrUZ1Ga"></div>
+        <input type="submit" value="Iniciar sesión">
+      </form>
+      <p>No tienes cuenta? <a href="registro.html">Regístrate</a></p>
+    </div>
+    <script>
+      document.getElementById('login-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Obtener los valores ingresados por el usuario
+        var usuarioValue = document.getElementById('usuario').value;
+        var contraseñaValue = document.getElementById('contrasena').value;
+
+        // Crear un objeto FormData para enviar los datos del formulario
+        var formData = new FormData();
+        formData.append('usuario', usuarioValue);
+        formData.append('contrasena', contraseñaValue);
+
+        // Enviar una solicitud POST al archivo PHP para validar las credenciales de inicio de sesión
+        fetch('procesar_login.php', {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => response.text())
+          .then(data => {
+            if (data === 'Inicio de sesión exitoso como administrador') {
+              // Inicio de sesión exitoso como administrador, redirigir al usuario a la página de administrador
+              window.location.href = 'admi.html';
+            } else if (data === 'Inicio de sesión exitoso como usuario registrado') {
+              // Inicio de sesión exitoso como usuario registrado, redirigir al usuario a la página de usuario
+              window.location.href = 'Inicio.html';
+            } else {
+              // Credenciales de inicio de sesión inválidas, mostrar un mensaje al usuario
+              alert(data);
+            }
+          });
+      });
+    </script>
+  </body>
+</html>

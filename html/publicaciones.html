@@ -1,0 +1,104 @@
+
+      
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="../img/uleam.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publicaciones</title>
+  <style>
+      body {
+      font-family: Arial, sans-serif;
+    }
+    a{
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #fb0707;
+    color: #fff;
+    text-decoration: none;
+    }
+    
+    /* Estilos para los enlaces al pasar el cursor por encima */
+    a:hover{
+    background-color: rgb(38, 190, 53);
+    }
+    #publicacionesContainer {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .publicacion {
+      width: 300px;
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f0f8ff;
+    }
+    .publicacion h3 {
+      margin-top: 0;
+      color: #2a7ae2;
+    }
+    .publicacion p:last-of-type {
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <a href="Inicio.html">Salir</a>
+  <h1>Publicaciones</h1>
+
+  <input type="text" id="searchInput" placeholder="Buscar por título">
+  <div id="publicacionesContainer"></div>
+
+  <script>
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'consultar_publicaciones.php', true);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        var publicaciones = JSON.parse(xhr.responseText);
+        var container = document.getElementById('publicacionesContainer');
+        var searchInput = document.getElementById('searchInput');
+
+        // Mostrar todas las publicaciones al cargar la página
+        mostrarPublicaciones(publicaciones);
+
+        // Realizar la búsqueda al escribir en el cuadro de búsqueda
+        searchInput.addEventListener('input', function() {
+          var searchTerm = searchInput.value.toLowerCase();
+          var resultados = publicaciones.filter(function(publicacion) {
+            var titulo = publicacion.titulo.toLowerCase();
+            return titulo.includes(searchTerm);
+          });
+
+          if (resultados.length > 0) {
+            mostrarPublicaciones(resultados);
+          } else {
+            container.innerHTML = '<p>No hay publicaciones sobre el tema buscado.</p>';
+          }
+        });
+      } else {
+        console.error('Error al obtener las publicaciones.');
+      }
+    };
+    xhr.send();
+
+    function mostrarPublicaciones(publicaciones) {
+      var container = document.getElementById('publicacionesContainer');
+      container.innerHTML = '';
+
+      for (var i = 0; i < publicaciones.length; i++) {
+        var publicacion = publicaciones[i];
+        var html = '<div class="publicacion">';
+        html += '<h3>' + publicacion.titulo + '</h3>';
+        html += '<p>' + publicacion.descripcion + '</p>';
+        html += '<p>' + publicacion.tratamiento + '</p>';
+        html += '</div>';
+        container.innerHTML += html;
+      }
+    }
+  </script>
+</body>
+</html>
+
